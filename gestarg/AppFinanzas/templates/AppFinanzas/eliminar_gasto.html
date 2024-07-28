@@ -3,6 +3,11 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1 class="mt-4">Tus gastos</h1>
-<p>Listado de gastos históricos:</p>
+<h1 class="mt-4">Eliminar Gasto</h1>
+<p>¿Estás seguro de que deseas eliminar este gasto?</p>
+<form action="" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="{% url 'MostrarGastos' %}" class="btn btn-secondary">Cancelar</a>
+</form>
 {% endblock %}
