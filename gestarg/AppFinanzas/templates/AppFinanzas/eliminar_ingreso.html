@@ -3,6 +3,11 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1 class="mt-4">Tus Ingresos</h1>
-<p>Listado de ingresos históricos:</p>
+<h1 class="mt-4">Eliminar Ingreso</h1>
+<p>¿Estás seguro de que quieres eliminar este ingreso?</p>
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Eliminar" class="btn btn-danger">
+    <a href="{% url 'MostrarIngresos' %}" class="btn btn-secondary">Cancelar</a>
+</form>
 {% endblock %}

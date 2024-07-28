@@ -3,6 +3,21 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1 class="mt-4">Tus Ingresos</h1>
+<h1 class="mt-4">Tus ingresos</h1>
+
+<form method="get" action="{% url 'MostrarIngresos' %}">
+    <input type="text" name="q" placeholder="Buscar por descripción" value="{{ query|default_if_none:'' }}">
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
 <p>Listado de ingresos históricos:</p>
+<a href="{% url 'AgregarIngreso' %}" class="btn btn-primary">Agregar Ingreso</a>
+<ul>
+    {% for ingreso in ingresos %}
+        <li>
+            ID: {{ ingreso.id }} ---> Fecha: {{ ingreso.fecha }} | Descripción: {{ ingreso.descripcion }} | Monto: {{ ingreso.monto }} | Cliente: {{ ingreso.cliente.razon_social }}
+            <a href="{% url 'EditarIngreso' ingreso.id %}" class="btn btn-warning">Editar</a>
+            <a href="{% url 'EliminarIngreso' ingreso.id %}" class="btn btn-danger">Eliminar</a>
+        </li>
+    {% endfor %}
+</ul>
 {% endblock %}

@@ -3,6 +3,12 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1 class="mt-4">Tus Ingresos</h1>
-<p>Listado de ingresos históricos:</p>
+<h1 class="mt-4">Agregar Ingreso</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" value="Enviar" class="btn btn-primary">
+</form>
 {% endblock %}
