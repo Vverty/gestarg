@@ -1,10 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Gasto, Ingreso
-from .forms import GastoForm, IngresoForm
+from .models import Gasto, Ingreso, Cliente
+from .forms import GastoForm, IngresoForm, BuscarClienteForm, ClienteForm
+from django.db.models import Sum
 
 def inicio(request):
-    return render(request, 'AppFinanzas/index.html')
+    total_ingresos = Ingreso.objects.aggregate(Sum('monto'))['monto__sum'] or 0
+    total_gastos = Gasto.objects.aggregate(Sum('monto'))['monto__sum'] or 0
+    cantidad_clientes = Cliente.objects.count()
+
+    context = {
+        'total_ingresos': total_ingresos,
+        'total_gastos': total_gastos,
+        'cantidad_clientes': cantidad_clientes,
+    }
+    return render(request, 'AppFinanzas/index.html', context)
 
 #GASTOS
 def agregar_gasto(request):
@@ -80,4 +90,52 @@ def eliminar_ingreso(request, pk):
         return redirect('MostrarIngresos')
     return render(request, 'AppFinanzas/eliminar_ingreso.html', {'ingreso': ingreso})
 
+#CLIENTES
+
+def mostrar_clientes(request):
+    form = BuscarClienteForm(request.GET or None)
+    clientes = Cliente.objects.all()
+
+    razon_social = request.GET.get('razon_social')
+    email = request.GET.get('email')
+
+    if razon_social:
+        clientes = clientes.filter(razon_social__icontains=razon_social)
+    if email:
+        clientes = clientes.filter(email__icontains=email)
+
+    context = {
+        'clientes': clientes,
+        'form': form,
+    }
+
+    return render(request, 'AppFinanzas/mostrar_clientes.html', context)
+
+def agregar_cliente(request):
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('MostrarClientes')
+    else:
+        form = ClienteForm()
+    return render(request, 'AppFinanzas/agregar_cliente.html', {'form': form})
+
+def editar_cliente(request, pk):
+    cliente = get_object_or_404(Cliente, pk=pk)
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            return redirect('MostrarClientes')
+    else:
+        form = ClienteForm(instance=cliente)
+    return render(request, 'AppFinanzas/editar_cliente.html', {'form': form})
+
+def eliminar_cliente(request, pk):
+    cliente = get_object_or_404(Cliente, pk=pk)
+    if request.method == 'POST':
+        cliente.delete()
+        return redirect('MostrarClientes')
+    return render(request, 'AppFinanzas/eliminar_cliente.html', {'cliente': cliente})
 
