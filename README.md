@@ -103,3 +103,5 @@ La aplicación **AppFinanzas** proporciona una interfaz web para gestionar ingre
    - **Mostrar Clientes**: Visualiza la lista de clientes, con opciones para buscar, editar o eliminar clientes existentes.
 
 Cada sección permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre los modelos correspondientes, facilitando la gestión completa de tus datos financieros y de clientes.
+
+Bootstrap: https://startbootstrap.com/template/simple-sidebar
