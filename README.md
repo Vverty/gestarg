@@ -82,3 +82,24 @@ AppFinanzas: Unica aplicación que se encarga de manejar los ingresos, gastos y 
 - **GastoForm:** Formulario para crear y actualizar instancias de Gasto.
 - **BuscarClienteForm:** Formulario para buscar clientes por razon social o email.
 
+## <> ##
+
+## Uso de la Página Web
+
+La aplicación **AppFinanzas** proporciona una interfaz web para gestionar ingresos, gastos y clientes.
+
+1. **Navegación**: Utiliza el menú navegable en el margen izquierdo para moverte entre las secciones de **Ingresos**, **Gastos** y **Clientes**.
+
+2. **Gestión de Ingresos**:
+   - **Agregar Ingreso**: Accede a la vista de agregar un nuevo ingreso desde la sección de ingresos.
+   - **Mostrar Ingresos**: Visualiza la lista de ingresos, con opciones para buscar, editar o eliminar ingresos existentes.
+
+3. **Gestión de Gastos**:
+   - **Agregar Gasto**: Accede a la vista de agregar un nuevo gasto desde la sección de gastos.
+   - **Mostrar Gastos**: Visualiza la lista de gastos, con opciones para buscar, editar o eliminar gastos existentes.
+
+4. **Gestión de Clientes**:
+   - **Agregar Cliente**: Accede a la vista de agregar un nuevo cliente desde la sección de clientes.
+   - **Mostrar Clientes**: Visualiza la lista de clientes, con opciones para buscar, editar o eliminar clientes existentes.
+
+Cada sección permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre los modelos correspondientes, facilitando la gestión completa de tus datos financieros y de clientes.
