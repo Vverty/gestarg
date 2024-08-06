@@ -23,7 +23,12 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'MostrarIngresos' %}">Ingresos</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'MostrarClientes' %}">Clientes</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Perfil</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Cerrar sesión</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'Logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar sesión</a>
+
+<!-- Formulario oculto para la solicitud POST -->
+                    <form id="logout-form" method="post" action="{% url 'Logout' %}" style="display: none;">
+                        {% csrf_token %}
+                    </form>
                 </div>
             </div>
             <!-- Page content wrapper-->

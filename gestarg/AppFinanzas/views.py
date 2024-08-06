@@ -3,7 +3,9 @@ from django.http import HttpResponse
 from .models import Gasto, Ingreso, Cliente
 from .forms import GastoForm, IngresoForm, BuscarClienteForm, ClienteForm
 from django.db.models import Sum
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def inicio(request):
     total_ingresos = Ingreso.objects.aggregate(Sum('monto'))['monto__sum'] or 0
     total_gastos = Gasto.objects.aggregate(Sum('monto'))['monto__sum'] or 0
@@ -17,6 +19,7 @@ def inicio(request):
     return render(request, 'AppFinanzas/index.html', context)
 
 #GASTOS
+@login_required
 def agregar_gasto(request):
     if request.method == 'POST':
         form = GastoForm(request.POST)
@@ -27,6 +30,7 @@ def agregar_gasto(request):
         form = GastoForm()
     return render(request, 'AppFinanzas/agregar_gasto.html', {'form': form})
 
+@login_required
 def mostrar_gastos(request):
     query = request.GET.get('q')
     if query:
@@ -35,6 +39,7 @@ def mostrar_gastos(request):
         gastos = Gasto.objects.all()
     return render(request, 'AppFinanzas/mostrar_gastos.html', {'gastos': gastos, 'query': query})
 
+@login_required
 def editar_gasto(request, id):
     gasto = get_object_or_404(Gasto, id=id)
     if request.method == 'POST':
@@ -46,6 +51,7 @@ def editar_gasto(request, id):
         form = GastoForm(instance=gasto)
     return render(request, 'AppFinanzas/editar_gasto.html', {'form': form})
 
+@login_required
 def eliminar_gasto(request, id):
     gasto = get_object_or_404(Gasto, id=id)
     if request.method == 'POST':
@@ -54,6 +60,7 @@ def eliminar_gasto(request, id):
     return render(request, 'AppFinanzas/eliminar_gasto.html', {'gasto': gasto})
 
 #INGRESOS
+@login_required
 def agregar_ingreso(request):
     if request.method == 'POST':
         form = IngresoForm(request.POST)
@@ -64,6 +71,7 @@ def agregar_ingreso(request):
         form = IngresoForm()
     return render(request, 'AppFinanzas/agregar_ingreso.html', {'form': form})
 
+@login_required
 def mostrar_ingresos(request):
     query = request.GET.get('q')
     if query:
@@ -72,6 +80,7 @@ def mostrar_ingresos(request):
         ingresos = Ingreso.objects.all()
     return render(request, 'AppFinanzas/mostrar_ingresos.html', {'ingresos': ingresos, 'query': query})
 
+@login_required
 def editar_ingreso(request, pk):
     ingreso = get_object_or_404(Ingreso, pk=pk)
     if request.method == 'POST':
@@ -83,6 +92,7 @@ def editar_ingreso(request, pk):
         form = IngresoForm(instance=ingreso)
     return render(request, 'AppFinanzas/editar_ingreso.html', {'form': form})
 
+@login_required
 def eliminar_ingreso(request, pk):
     ingreso = get_object_or_404(Ingreso, pk=pk)
     if request.method == 'POST':
@@ -92,6 +102,7 @@ def eliminar_ingreso(request, pk):
 
 #CLIENTES
 
+@login_required
 def mostrar_clientes(request):
     form = BuscarClienteForm(request.GET or None)
     clientes = Cliente.objects.all()
@@ -111,6 +122,7 @@ def mostrar_clientes(request):
 
     return render(request, 'AppFinanzas/mostrar_clientes.html', context)
 
+@login_required
 def agregar_cliente(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
@@ -121,6 +133,7 @@ def agregar_cliente(request):
         form = ClienteForm()
     return render(request, 'AppFinanzas/agregar_cliente.html', {'form': form})
 
+@login_required
 def editar_cliente(request, pk):
     cliente = get_object_or_404(Cliente, pk=pk)
     if request.method == 'POST':
@@ -132,6 +145,7 @@ def editar_cliente(request, pk):
         form = ClienteForm(instance=cliente)
     return render(request, 'AppFinanzas/editar_cliente.html', {'form': form})
 
+@login_required
 def eliminar_cliente(request, pk):
     cliente = get_object_or_404(Cliente, pk=pk)
     if request.method == 'POST':
