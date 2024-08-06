@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserEditForm
+from django.contrib.auth.decorators import login_required
 
 def login_request(request):
 
@@ -41,5 +42,38 @@ def register(request):
 
     form = UserRegisterForm()     
     return render(request,"Users/register.html" ,  {"form":form, "msg_register": msg_register})
+
+# Vista de editar el perfil
+# Obligamos a loguearse para editar los datos del usuario activo
+@login_required
+def editar_perfil(request):
+
+    # El usuario para poder editar su perfil primero debe estar logueado.
+    # Al estar logueado, podremos encontrar dentro del request la instancia
+    # del usuario -> request.user
+    usuario = request.user
+
+    if request.method == 'POST':
+
+        miFormulario = UserEditForm(request.POST, instance=request.user)
+
+        if miFormulario.is_valid():
+
+            miFormulario.save()
+
+            # Retornamos al inicio una vez guardado los datos
+            return render(request, "AppFinanzas/index.html")
+
+    else:
+        miFormulario = UserEditForm(instance=request.user)
+
+    return render(
+        request,
+        "Users/edit_user.html",
+        {
+            "mi_form": miFormulario,
+            "usuario": usuario
+        }
+    )
 
 

@@ -11,18 +11,40 @@
         <link rel="icon" type="image/x-icon" href="AppFinanzas/assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'AppFinanzas/css/styles.css' %}" rel="stylesheet" />
+        <style>
+            .sidebar-heading {
+                font-size: 1.25rem;
+                font-weight: bold;
+                text-align: center;
+                padding: 1rem 0;
+                margin-bottom: 0;
+            }
+
+            .sidebar-heading a {
+                text-decoration: none;
+                color: inherit;
+                display: block;
+                width: 100%;
+            }
+
+            .sidebar-heading a:hover {
+                color: #007bff; /* Color al pasar el mouse */
+            }
+        </style>
     </head>
     <body>
         <div class="d-flex" id="wrapper">
             <!-- Sidebar-->
             <div class="border-end bg-white" id="sidebar-wrapper">
-                <div class="sidebar-heading border-bottom bg-light">GestArg</div>
+                <div class="sidebar-heading border-bottom bg-light">
+                    <a href="{% url 'Inicio' %}">GestArg</a>
+                </div>
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'Inicio' %}">Inicio</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'MostrarGastos' %}">Gastos</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'MostrarIngresos' %}">Ingresos</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'MostrarClientes' %}">Clientes</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Perfil</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'EditarPerfil' %}">Perfil</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'Logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar sesión</a>
 
 <!-- Formulario oculto para la solicitud POST -->
