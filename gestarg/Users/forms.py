@@ -11,23 +11,12 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ["username", "email", "password1", "password2"]
         help_texts = {k: "" for k in fields}  # Limpia los mensajes de ayuda predeterminados
-class UserEditForm(UserCreationForm):
-
-    # Obligatorios
+class UserEditForm(forms.ModelForm):
     email = forms.EmailField(label="Ingrese su email:")
-    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repetir la contraseña', widget=forms.PasswordInput)
-    # No obligatorios
-    last_name = forms.CharField()
-    first_name = forms.CharField()
+    first_name = forms.CharField(label='Nombre')
+    last_name = forms.CharField(label='Apellido')
 
     class Meta:
         model = User
-        fields = [
-            'email',
-            'password1',
-            'password2',
-            'last_name',
-            'first_name'
-        ]
-        help_texts = {k:"" for k in fields}
+        fields = ['first_name', 'last_name', 'email']
+        help_texts = {k: "" for k in fields}
