@@ -1,9 +1,17 @@
+import json
+from decimal import Decimal
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Gasto, Ingreso, Cliente
-from .forms import GastoForm, IngresoForm, BuscarClienteForm, ClienteForm
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import TruncDay
+
+from .models import Gasto, Ingreso, Cliente
+from .forms import GastoForm, IngresoForm, BuscarClienteForm, ClienteForm
+
+
+
 
 @login_required
 def inicio(request):
@@ -11,12 +19,32 @@ def inicio(request):
     total_gastos = Gasto.objects.aggregate(Sum('monto'))['monto__sum'] or 0
     cantidad_clientes = Cliente.objects.count()
 
+    ingresos_diarios = list(Ingreso.objects.values('fecha').annotate(total=Sum('monto')).order_by('fecha'))
+    gastos_diarios = list(Gasto.objects.values('fecha').annotate(total=Sum('monto')).order_by('fecha'))
+
+    for ingreso in ingresos_diarios:
+        ingreso['fecha'] = ingreso['fecha'].strftime('%Y-%m-%d')
+        ingreso['total'] = float(ingreso['total'])
+
+    for gasto in gastos_diarios:
+        gasto['fecha'] = gasto['fecha'].strftime('%Y-%m-%d')
+        gasto['total'] = float(gasto['total'])
+
+    # Imprime los datos en la consola del servidor
+    print(json.dumps(ingresos_diarios, indent=2))
+    print(json.dumps(gastos_diarios, indent=2))
+
     context = {
         'total_ingresos': total_ingresos,
         'total_gastos': total_gastos,
         'cantidad_clientes': cantidad_clientes,
+        'ingresos_diarios': json.dumps(ingresos_diarios),  # Convertir a JSON
+        'gastos_diarios': json.dumps(gastos_diarios),    # Convertir a JSON
     }
     return render(request, 'AppFinanzas/index.html', context)
+
+
+
 
 #GASTOS
 @login_required
