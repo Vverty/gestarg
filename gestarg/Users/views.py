@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, update_session_auth_hash
 from .forms import UserRegisterForm, UserEditForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
+
+
 
 def login_request(request):
 
@@ -75,5 +79,22 @@ def editar_perfil(request):
             "usuario": usuario
         }
     )
+
+@login_required
+def cambiar_contrasenia(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Mantener la sesión iniciada después del cambio de contraseña
+            messages.success(request, 'Tu contraseña ha sido actualizada con éxito.')
+            return redirect('EditarPerfil')  # Redirige al perfil o a la página deseada
+        else:
+            messages.error(request, 'Por favor corrige los errores a continuación.')
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    return render(request, 'Users/password_change.html', {'form': form})
+
 
 
